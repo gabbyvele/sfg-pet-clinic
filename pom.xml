@@ -28,6 +28,10 @@
 
     </dependencies>
 
+    <scm>
+        <developerConnection>scm:git:git@github.com:gabbyvele/sfg-pet-clinic.git</developerConnection>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
@@ -43,9 +47,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <scm>
-        <developerConnection>scm:git:git@github.com:gabbyvele/sfg-pet-clinic.git</developerConnection>
-    </scm>
-
 </project>
