@@ -1,8 +1,10 @@
 package com.jooce.sfgpetclinic.bootstrap;
 
 import com.jooce.sfgpetclinic.model.Owner;
+import com.jooce.sfgpetclinic.model.PetType;
 import com.jooce.sfgpetclinic.model.Vet;
 import com.jooce.sfgpetclinic.services.OwnerService;
+import com.jooce.sfgpetclinic.services.PetTypeService;
 import com.jooce.sfgpetclinic.services.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -12,11 +14,12 @@ public class DataLoader implements CommandLineRunner {
 
     private final OwnerService ownerService;
     private final VetService vetService;
+    private final PetTypeService petTypeService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
         this.ownerService = ownerService;
-
         this.vetService = vetService;
+        this.petTypeService = petTypeService;
     }
 
     @Override
@@ -26,6 +29,9 @@ public class DataLoader implements CommandLineRunner {
 
         addVet("Gabby", "Vele");
         addVet("Jin", "Zindagi");
+
+        addPetType("Dog");
+        addPetType("Cat");
     }
 
     private void addOwner(String firstName, String lastName) {
@@ -42,5 +48,12 @@ public class DataLoader implements CommandLineRunner {
         vet.setLastName(lastName);
 
         vetService.save(vet);
+    }
+
+    private PetType addPetType(String name) {
+        PetType petType = new PetType();
+        petType.setName(name);
+
+        return petTypeService.save(petType);
     }
 }
