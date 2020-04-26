@@ -29,7 +29,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         int countPets = petTypeService.findAll().size();
 
-        if (countPets == 0){
+        if (countPets == 0) {
             loadData();
         }
     }
