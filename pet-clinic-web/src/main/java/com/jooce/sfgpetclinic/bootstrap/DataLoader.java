@@ -49,10 +49,13 @@ public class DataLoader implements CommandLineRunner {
         gabriel.getPets().add(gabsPet);
 
         Owner mika = addOwner("Mika", "Zindagi", "Bucleugh", "Bucleugh", "08432123491");
-        Pet mikasPet1 = addPet("Buddy", dog, mika, LocalDate.now());
-        mika.getPets().add(mikasPet1);
-        Pet mikasPet2 = addPet("Buddy", cat, mika, LocalDate.now());
-        mika.getPets().add(mikasPet2);
+        Pet buddy = addPet("Buddy", dog, mika, LocalDate.now());
+        buddy.getVisits().add(addVisit(buddy, LocalDate.now(), "Sleepy dog"));
+        mika.getPets().add(buddy);
+
+        Pet frisky = addPet("Frisky", cat, mika, LocalDate.now());
+        frisky.getVisits().add(addVisit(frisky, LocalDate.now(), "Sneezing Cat"));
+        mika.getPets().add(frisky);
 
         addVet("Gabby", "Vele", radiology);
         addVet("Jin", "Zindagi", surgery);
@@ -100,5 +103,14 @@ public class DataLoader implements CommandLineRunner {
         pet.setBirthDate(birthDate);
 
         return pet;
+    }
+
+    private Visit addVisit(Pet frisky, LocalDate date, String description) {
+        Visit visit = new Visit();
+        visit.setDate(date);
+        visit.setDescription(description);
+        visit.setPet(frisky);
+
+        return visit;
     }
 }
