@@ -1,11 +1,9 @@
 package com.jooce.sfgpetclinic.bootstrap;
 
-import com.jooce.sfgpetclinic.model.Owner;
-import com.jooce.sfgpetclinic.model.Pet;
-import com.jooce.sfgpetclinic.model.PetType;
-import com.jooce.sfgpetclinic.model.Vet;
+import com.jooce.sfgpetclinic.model.*;
 import com.jooce.sfgpetclinic.services.OwnerService;
 import com.jooce.sfgpetclinic.services.PetTypeService;
+import com.jooce.sfgpetclinic.services.SpecialityService;
 import com.jooce.sfgpetclinic.services.VetService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -18,17 +16,33 @@ public class DataLoader implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
     private final PetTypeService petTypeService;
+    private final SpecialityService specialityService;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialityService specialityService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
+        this.specialityService = specialityService;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        int countPets = petTypeService.findAll().size();
+
+        if (countPets == 0){
+            loadData();
+        }
+    }
+
+    private void loadData() {
+        System.out.println("Load data");
+
         PetType dog = addPetType("Dog");
         PetType cat = addPetType("Cat");
+
+        Speciality radiology = addSpeciality("radiology");
+        Speciality surgery = addSpeciality("surgery");
+        Speciality dentistry = addSpeciality("dentistry");
 
         Owner gabriel = addOwner("Gabriel", "Matshabe", "Roodeport", "Roodeport", "0832465689");
         Pet gabsPet = addPet("Rosco", dog, gabriel, LocalDate.now());
@@ -40,8 +54,16 @@ public class DataLoader implements CommandLineRunner {
         Pet mikasPet2 = addPet("Buddy", cat, mika, LocalDate.now());
         mika.getPets().add(mikasPet2);
 
-        addVet("Gabby", "Vele");
-        addVet("Jin", "Zindagi");
+        addVet("Gabby", "Vele", radiology);
+        addVet("Jin", "Zindagi", surgery);
+        addVet("Sam", "Axe", dentistry);
+    }
+
+    private Speciality addSpeciality(String description) {
+        Speciality speciality = new Speciality();
+        speciality.setDescription(description);
+
+        return specialityService.save(speciality);
     }
 
     private Owner addOwner(String firstName, String lastName, String address, String city, String telephone) {
@@ -52,10 +74,10 @@ public class DataLoader implements CommandLineRunner {
         owner.setCity(city);
         owner.setTelephone(telephone);
 
-       return ownerService.save(owner);
+        return ownerService.save(owner);
     }
 
-    private void addVet(String firstName, String lastName) {
+    private void addVet(String firstName, String lastName, Speciality radiology) {
         Vet vet = new Vet();
         vet.setFirstName(firstName);
         vet.setLastName(lastName);
