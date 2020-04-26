@@ -15,7 +15,7 @@ public class SpecialityServiceMap extends AbstractMapService<Speciality, Long> i
     }
 
     @Override
-    public Speciality findByID(Long id) {
+    public Speciality findById(Long id) {
         return super.findById(id);
     }
 
