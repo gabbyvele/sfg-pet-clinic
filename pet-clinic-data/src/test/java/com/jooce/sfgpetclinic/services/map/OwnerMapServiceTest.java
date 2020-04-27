@@ -69,6 +69,6 @@ class OwnerMapServiceTest {
 
         assertNotNull(owner);
 
-        assertEquals("Matshabe", owner.getFirstName());
+        assertEquals("Matshabe", owner.getLastName());
     }
 }
